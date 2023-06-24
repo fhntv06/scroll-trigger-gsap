@@ -2,6 +2,7 @@ body {
   background-color: whitesmoke;
   height: max-content;
   max-height: max-content;
+  overflow-x: hidden;
 }
 
 header {
