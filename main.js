@@ -1,35 +1,59 @@
+const wrapper = document.querySelector('wrapper');
 const mainOne = document.querySelector('#main-1');
 const mainTwo = document.querySelector('#main-2');
 const arSectionMoveOne = mainOne.querySelectorAll('#second, #thrith');
 const arSectionMoveTwo = mainTwo.querySelectorAll('#six, #seven');
 
-const optionsFromTo = [
-  { y: '+200%' },
-  { y: 0,
-    duration: 3,
-  },
-];
+const arSelectorsSectionMoveOne = ['#second', '#thrith'];
+const arSelectorsSectionMoveTwo = ['#six', '#seven'];
 
-const optionsScrollTrigger = {
-  start: 'top top',
-  end: () => document.body.offsetHeight,
-  scrub: true,
-  pin: true,
-};
+// const optionsFromTo = [
+//   { y: '+100%' },
+//   { y: 0 },
+// ];
+
+// const optionsScrollTrigger = {
+//   start: 'top top',
+//   end: () => document.body.offsetHeight,
+//   scrub: true,
+//   markers: true,
+//   pin: true,
+// };
+
+gsap.registerPlugin(ScrollTrigger);
 
 const createTimeline = (arSections, trigger) => {
-  const timeline = gsap.timeline();
-  
-  arSections.forEach((section) => timeline.fromTo(section, ...optionsFromTo));
- 
-  ScrollTrigger.create(
-    {
-      animation: timeline,
-      trigger,
-      ...optionsScrollTrigger,
-    }
-  );
-}
+  arSections.forEach((section) => {
+    // const timeline = gsap.timeline();
+    // timeline.fromTo(section, ...optionsFromTo);
+    gsap.fromTo(`${section} .section-move`,
+      { y: '+100%' },
+      {
+        y: 0,
+        scrollTrigger: {
+          trigger: section,
+          markers: true,
+          scrub: true,
+          start: 'top 100%',
+          end: "bottom 50%+=10px",
+          onToggle: ({ trigger }) => console.log(`trigger is work: ${trigger.id}`),
+          onUpdate: ({ progress }) => {
+            console.log(`progress: ${progress}, `);
+          }
+        }
+      });
 
-createTimeline(arSectionMoveOne, mainOne);
-createTimeline(arSectionMoveTwo, mainTwo);
+    // ScrollTrigger.create(
+    //   {
+    //     animation: timeline,
+    //     trigger,
+    //     ...optionsScrollTrigger,
+    //   }
+    // );
+  });
+}
+createTimeline(arSelectorsSectionMoveOne, mainOne);
+createTimeline(arSelectorsSectionMoveTwo, mainTwo);
+
+// createTimeline(arSectionMoveOne, mainOne);
+// createTimeline(arSectionMoveTwo, mainTwo);
